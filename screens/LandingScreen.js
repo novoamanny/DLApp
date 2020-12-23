@@ -19,9 +19,7 @@ const LandingScreen = () =>{
 const styles = StyleSheet.create({
     Layout:{
         flex: 1,
-        
-        
-        backgroundColor: '#fff',
+        backgroundColor: '#2f2f2f',
         
     },
     
