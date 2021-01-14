@@ -1,17 +1,25 @@
 import React, {useEffect} from 'react';
-import {FlatList, View, ScrollView, Text, StyleSheet, Dimensions} from 'react-native';
+import {FlatList, View, ScrollView, Text, StyleSheet, Dimensions, ImageBackground} from 'react-native';
+import {connect} from 'react-redux'
+import PropTypes from 'prop-types';
+
+import LandingForm from '../components/Landing-Form';
 
 
-// import HeaderImage from '../../components/HeaderImage';
 
 
-const LandingScreen = () =>{
-
-   
+const LandingScreen = ({navigation,auth:{isAuthenticated, token}}) =>{
+    
+   if(isAuthenticated){
+       
+        navigation.navigate('Dashboard', {token: token})
+   }
 
     return(
         <View style={styles.Layout}>
-           <Text>Hello</Text>
+           <ImageBackground source={require('../images/city.jpeg')} style={styles.image}>
+                <LandingForm/>
+           </ImageBackground>
         </View>
     )
 }
@@ -22,9 +30,26 @@ const styles = StyleSheet.create({
         backgroundColor: '#2f2f2f',
         
     },
+    image:{
+        flex: 1,
+        resizeMode: 'cover',
+        
+    }
     
     
 })
 
+LandingScreen.propTypes = {
+    
+    auth: PropTypes.object.isRequired
+    
+    
+}
 
-export default LandingScreen;
+const mapStateToProps = state => ({
+    auth: state.auth
+    
+    
+});
+
+export default connect(mapStateToProps, null)(LandingScreen);

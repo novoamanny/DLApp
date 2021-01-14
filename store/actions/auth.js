@@ -2,7 +2,7 @@ import axios from 'axios';
 // import {setAlert} from './alert';
 
 import {REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, CLEAR_PROFILE} from './types';
-import setAuthToken from '../utils/setAuthToken';
+import setAuthToken from '../../utils/setAuthToken';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
@@ -14,13 +14,16 @@ const config = {
 
 
 export const loadUser = () => async dispatch =>{
+  
+
   if(AsyncStorage.token){
+    console.log(AsyncStorage.token)
     setAuthToken(AsyncStorage.token);
   }
 
   try {
-    const res = await axios.get('http://localhost:5000/api/auth');
-
+    const res = await axios.get('http://192.168.1.5::5000/api/auth');
+    
     dispatch({
       type: USER_LOADED,
       payload: res.data
@@ -36,16 +39,16 @@ export const loadUser = () => async dispatch =>{
 
 
 // Register User
-export const register = ({registerName, registerEmail, registerPassword}) => async dispatch =>{
-
-    const body= JSON.stringify({name: registerName, email: registerEmail, password: registerPassword});
+export const register = (FirstName, LastName, Email, Password) => async dispatch =>{
+  
+    const body= JSON.stringify({FirstName, LastName, Email, Password});
     
 
     try{
-        const res = await axios.post('http://localhost:5000/api/users/enroll', body, config, console.log('Registering...'));
-                        
+        const res = await axios.post('http://192.168.1.5:5000/api/users/enroll', body, config);
         
-
+        
+      
         dispatch({
             type: REGISTER_SUCCESS,
             payload: res.data
@@ -64,14 +67,14 @@ export const register = ({registerName, registerEmail, registerPassword}) => asy
 
 
 // Login User
-export const login = (loginEmail, loginPassword) => async dispatch => {
+export const login = (Email, Password) => async dispatch => {
   
-    const body = JSON.stringify({ email: loginEmail, password: loginPassword });
+    const body = JSON.stringify({ Email, Password });
 
    
   
     try {
-      const res = await axios.post('http://localhost:5000/api/auth', body, config);
+      const res = await axios.post('http://192.168.1.5:5000/api/auth', body, config);
         
       
       dispatch({
